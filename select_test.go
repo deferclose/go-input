@@ -86,7 +86,7 @@ func TestSelect(t *testing.T) {
 			Reader: c.userInput,
 		}
 
-		ans, err := ui.Select("", c.list, c.opts)
+		ans, _, err := ui.Select("", c.list, c.opts)
 		if err != nil {
 			t.Fatalf("#%d expect not to occurr error: %s", i, err)
 		}
@@ -101,13 +101,57 @@ func TestSelect_invalidDefault(t *testing.T) {
 	ui := &UI{
 		Writer: io.Discard,
 	}
-	_, err := ui.Select("Which?", []string{"A", "B", "C"}, &Options{
+	_, _, err := ui.Select("Which?", []string{"A", "B", "C"}, &Options{
 		// "D" is not in select target list
 		Default: "D",
 	})
 
 	if err == nil {
 		t.Fatal("expect err to be occurr")
+	}
+}
+
+func TestSelect_SelectDefault(t *testing.T) {
+	ui := &UI{
+		Reader: bytes.NewBufferString("\r"),
+		Writer: io.Discard,
+	}
+	rslt, n, err := ui.Select("Which?", []string{"A", "B", "C"}, &Options{
+		// "D" is not in select target list
+		Default: "A",
+	})
+
+	if err != nil {
+		t.Fatal("expect err to be nil, but got", err)
+	}
+
+	if rslt != "A" {
+		t.Fatal("expect rslt to be A")
+	}
+	if n != 0 {
+		t.Fatal("expect n to be 0")
+	}
+}
+
+func TestSelect_SelectDefault2(t *testing.T) {
+	ui := &UI{
+		Reader: bytes.NewBufferString("\r"),
+		Writer: io.Discard,
+	}
+	rslt, n, err := ui.Select("Which?", []string{"A", "B", "C"}, &Options{
+		// "D" is not in select target list
+		DefaultSelected: 2,
+	})
+
+	if err != nil {
+		t.Fatal("expect err to be nil, but got", err)
+	}
+
+	if rslt != "B" {
+		t.Fatal("expect rslt to be B")
+	}
+	if n != 1 {
+		t.Fatal("expect n to be 1")
 	}
 }
 
@@ -120,12 +164,12 @@ func ExampleUI_Select() {
 	}
 
 	query := "Which language do you prefer to use?"
-	lang, _ := ui.Select(query, []string{"go", "Go", "golang"}, &Options{
+	lang, n, _ := ui.Select(query, []string{"go", "Go", "golang"}, &Options{
 		Default: "Go",
 	})
 
-	fmt.Println(lang)
-	// Output: golang
+	fmt.Println(lang, n)
+	// Output: golang 2
 }
 
 func ExampleUI_Select_Win() {
@@ -137,10 +181,10 @@ func ExampleUI_Select_Win() {
 	}
 
 	query := "Which language do you prefer to use?"
-	lang, _ := ui.Select(query, []string{"go", "Go", "golang"}, &Options{
+	lang, n, _ := ui.Select(query, []string{"go", "Go", "golang"}, &Options{
 		Default: "Go",
 	})
 
-	fmt.Println(lang)
-	// Output: golang
+	fmt.Println(lang, n)
+	// Output: golang 2
 }

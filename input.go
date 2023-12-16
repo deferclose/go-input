@@ -1,17 +1,17 @@
 /*
 Package input reads user input at the console. http://github.com/tcnksm/go-input
 
-  ui := &input.UI{
-      Writer: os.Stdout,
-      Reader: os.Stdin,
-  }
+	ui := &input.UI{
+	    Writer: os.Stdout,
+	    Reader: os.Stdin,
+	}
 
-  query := "What is your name?"
-  name, err := ui.Ask(query, &input.Options{
-      Default: "tcnksm",
-      Required: true,
-      Loop:     true,
-  })
+	query := "What is your name?"
+	name, err := ui.Ask(query, &input.Options{
+	    Default: "tcnksm",
+	    Required: true,
+	    Loop:     true,
+	})
 */
 package input
 
@@ -95,6 +95,10 @@ type Options struct {
 	// Default is the default value which is used when no thing
 	// is input.
 	Default string
+
+	// DefaultSelected is the default index which is used when no thing
+	// is select. Start from 1
+	DefaultSelected int
 
 	// Loop loops asking user to input until getting valid input.
 	Loop bool

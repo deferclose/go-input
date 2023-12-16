@@ -15,7 +15,7 @@ import (
 //
 // If the user sends SIGINT (Ctrl+C) while reading input, it catches
 // it and return it as a error.
-func (i *UI) Select(query string, list []string, opts *Options) (string, error) {
+func (i *UI) Select(query string, list []string, opts *Options) (string, int, error) {
 	// Set default val
 	i.once.Do(i.setDefault)
 
@@ -24,21 +24,28 @@ func (i *UI) Select(query string, list []string, opts *Options) (string, error) 
 	// If empty, can not transform it to int.
 	opts.Required = true
 
-	// Find default index which opts.Default indicates
-	defaultIndex := -1
-	defaultVal := opts.Default
-	if defaultVal != "" {
-		for i, item := range list {
-			if item == defaultVal {
-				defaultIndex = i
-			}
-		}
+	var defaultIndex int
 
-		// DefaultVal is set but doesn't exist in list
-		if defaultIndex == -1 {
-			// This error message is not for user
-			// Should be found while development
-			return "", fmt.Errorf("opt.Default is specified but item does not exist in list")
+	if opts.DefaultSelected > 0 {
+		defaultIndex = opts.DefaultSelected - 1
+		//defaultVal := list[defaultIndex]
+	} else {
+		// Find default index which opts.Default indicates
+		defaultIndex = -1
+		defaultVal := opts.Default
+		if defaultVal != "" {
+			for i, item := range list {
+				if item == defaultVal {
+					defaultIndex = i
+				}
+			}
+
+			// DefaultVal is set but doesn't exist in list
+			if defaultIndex == -1 {
+				// This error message is not for user
+				// Should be found while development
+				return "", 0, fmt.Errorf("opt.Default is specified but item does not exist in list")
+			}
 		}
 	}
 
@@ -53,7 +60,7 @@ func (i *UI) Select(query string, list []string, opts *Options) (string, error) 
 	fmt.Fprintf(i.Writer, buf.String())
 
 	// resultStr and resultErr are return val of this function
-	var resultStr string
+	var resultIndex int
 	var resultErr error
 	for {
 
@@ -76,9 +83,13 @@ func (i *UI) Select(query string, list []string, opts *Options) (string, error) 
 			break
 		}
 
+		line = strings.TrimRightFunc(line, func(r rune) bool {
+			return r == '\r' || r == '\n'
+		})
+
 		// line is empty but default is provided returns it
 		if line == "" && defaultIndex >= 0 {
-			resultStr = list[defaultIndex]
+			resultIndex = defaultIndex
 			break
 		}
 
@@ -93,9 +104,7 @@ func (i *UI) Select(query string, list []string, opts *Options) (string, error) 
 		}
 
 		// Convert user input string to int val
-		line = strings.TrimRightFunc(line, func(r rune) bool {
-			return r == '\r' || r == '\n'
-		})
+
 		n, err := strconv.Atoi(line)
 		if err != nil {
 			if !opts.Loop {
@@ -134,12 +143,12 @@ func (i *UI) Select(query string, list []string, opts *Options) (string, error) 
 		}
 
 		// Reach here means it gets ideal input.
-		resultStr = list[n-1]
+		resultIndex = n - 1
 		break
 	}
 
 	// Insert the new line for next output
 	fmt.Fprintf(i.Writer, "\n")
 
-	return resultStr, resultErr
+	return list[resultIndex], resultIndex, resultErr
 }
