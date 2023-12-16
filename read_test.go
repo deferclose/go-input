@@ -3,7 +3,6 @@ package input
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"testing"
 )
 
@@ -36,7 +35,7 @@ func TestRead(t *testing.T) {
 
 	for i, tc := range cases {
 		ui := &UI{
-			Writer: ioutil.Discard,
+			Writer: io.Discard,
 			Reader: tc.userInput,
 		}
 

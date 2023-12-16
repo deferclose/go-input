@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"testing"
 )
 
@@ -41,7 +40,7 @@ func TestAsk(t *testing.T) {
 
 	for i, c := range cases {
 		ui := &UI{
-			Writer: ioutil.Discard,
+			Writer: io.Discard,
 			Reader: c.userInput,
 		}
 
@@ -61,7 +60,7 @@ func ExampleUI_Ask() {
 		// In real world, Reader is os.Stdin and input comes
 		// from user actual input.
 		Reader: bytes.NewBufferString("tcnksm"),
-		Writer: ioutil.Discard,
+		Writer: io.Discard,
 	}
 
 	query := "What is your name?"

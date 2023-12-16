@@ -3,7 +3,7 @@ package input
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"testing"
 )
 
@@ -16,7 +16,7 @@ func ExampleValidateFunc() {
 		// In real world, Reader is os.Stdin and input comes
 		// from user actual input
 		Reader: bytes.NewBufferString("Y\n"),
-		Writer: ioutil.Discard,
+		Writer: io.Discard,
 	}
 
 	query := "Do you love golang [Y/n]"

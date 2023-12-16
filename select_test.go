@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"testing"
 )
 
@@ -83,7 +82,7 @@ func TestSelect(t *testing.T) {
 
 	for i, c := range cases {
 		ui := &UI{
-			Writer: ioutil.Discard,
+			Writer: io.Discard,
 			Reader: c.userInput,
 		}
 
@@ -100,7 +99,7 @@ func TestSelect(t *testing.T) {
 
 func TestSelect_invalidDefault(t *testing.T) {
 	ui := &UI{
-		Writer: ioutil.Discard,
+		Writer: io.Discard,
 	}
 	_, err := ui.Select("Which?", []string{"A", "B", "C"}, &Options{
 		// "D" is not in select target list
@@ -117,7 +116,24 @@ func ExampleUI_Select() {
 		// In real world, Reader is os.Stdin and input comes
 		// from user actual input.
 		Reader: bytes.NewBufferString("3\n"),
-		Writer: ioutil.Discard,
+		Writer: io.Discard,
+	}
+
+	query := "Which language do you prefer to use?"
+	lang, _ := ui.Select(query, []string{"go", "Go", "golang"}, &Options{
+		Default: "Go",
+	})
+
+	fmt.Println(lang)
+	// Output: golang
+}
+
+func ExampleUI_Select_Win() {
+	ui := &UI{
+		// In real world, Reader is os.Stdin and input comes
+		// from user actual input.
+		Reader: bytes.NewBufferString("3\r"),
+		Writer: io.Discard,
 	}
 
 	query := "Which language do you prefer to use?"

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // Select asks the user to select a item from the given list by the number.
@@ -92,6 +93,9 @@ func (i *UI) Select(query string, list []string, opts *Options) (string, error) 
 		}
 
 		// Convert user input string to int val
+		line = strings.TrimRightFunc(line, func(r rune) bool {
+			return r == '\r' || r == '\n'
+		})
 		n, err := strconv.Atoi(line)
 		if err != nil {
 			if !opts.Loop {
