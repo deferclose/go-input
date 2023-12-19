@@ -172,7 +172,7 @@ func ExampleUI_Select() {
 	// Output: golang 2
 }
 
-func ExampleUI_Select_Win() {
+func ExampleUI_Select_2() {
 	ui := &UI{
 		// In real world, Reader is os.Stdin and input comes
 		// from user actual input.

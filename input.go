@@ -1,5 +1,5 @@
 /*
-Package input reads user input at the console. http://github.com/tcnksm/go-input
+Package input reads user input at the console. http://github.com/deferclose/go-input
 
 	ui := &input.UI{
 	    Writer: os.Stdout,
@@ -8,7 +8,7 @@ Package input reads user input at the console. http://github.com/tcnksm/go-input
 
 	query := "What is your name?"
 	name, err := ui.Ask(query, &input.Options{
-	    Default: "tcnksm",
+	    Default: "deferclose",
 	    Required: true,
 	    Loop:     true,
 	})

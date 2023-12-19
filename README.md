@@ -1,8 +1,8 @@
-go-input [![Go Documentation](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)][godocs] [![Travis](https://img.shields.io/travis/tcnksm/go-input.svg?style=flat-square)][travis] [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
+go-input [![Go Documentation](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)][godocs] [![Travis](https://img.shields.io/travis/deferclose/go-input.svg?style=flat-square)][travis] [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 ====
 
-[godocs]: http://godoc.org/github.com/tcnksm/go-input
-[travis]: https://travis-ci.org/tcnksm/go-input
+[godocs]: http://godoc.org/github.com/deferclose/go-input
+[travis]: https://travis-ci.org/deferclose/go-input
 [license]: /LICENSE
 
 `go-input` is a Go package for reading user input in console.
@@ -16,7 +16,7 @@ The documentation is on [GoDoc][godocs].
 Use `go get` to install this package:
 
 ```bash
-$ go get github.com/tcnksm/go-input
+$ go get github.com/deferclose/go-input
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ ui := &input.UI{
 
 query := "What is your name?"
 name, err := ui.Ask(query, &input.Options{
-    Default: "tcnksm",
+    Default: "deferclose",
     Required: true,
     Loop:     true,
 })
@@ -41,7 +41,7 @@ You can check other examples in [here](/_example).
 
 ## Contribution
 
-1. Fork ([https://github.com/tcnksm/go-input/fork](https://github.com/tcnksm/go-input/fork))
+1. Fork ([https://github.com/deferclose/go-input/fork](https://github.com/deferclose/go-input/fork))
 1. Create a feature branch
 1. Commit your changes
 1. Rebase your local changes against the master branch
@@ -51,4 +51,4 @@ You can check other examples in [here](/_example).
 
 ## Author
 
-[Taichi Nakashima](https://github.com/tcnksm)
+[Taichi Nakashima](https://github.com/deferclose)

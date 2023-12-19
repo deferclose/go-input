@@ -59,7 +59,7 @@ func ExampleUI_Ask() {
 	ui := &UI{
 		// In real world, Reader is os.Stdin and input comes
 		// from user actual input.
-		Reader: bytes.NewBufferString("tcnksm"),
+		Reader: bytes.NewBufferString("deferclose"),
 		Writer: io.Discard,
 	}
 
@@ -67,5 +67,5 @@ func ExampleUI_Ask() {
 	name, _ := ui.Ask(query, &Options{})
 
 	fmt.Println(name)
-	// Output: tcnksm
+	// Output: deferclose
 }

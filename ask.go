@@ -3,6 +3,7 @@ package input
 import (
 	"bytes"
 	"fmt"
+	"strings"
 )
 
 // Ask asks the user for input using the given query. The response is
@@ -49,6 +50,10 @@ func (i *UI) Ask(query string, opts *Options) (string, error) {
 			resultErr = err
 			break
 		}
+
+		line = strings.TrimRightFunc(line, func(r rune) bool {
+			return r == '\r' || r == '\n'
+		})
 
 		// line is empty but default is provided returns it
 		if line == "" && opts.Default != "" {
